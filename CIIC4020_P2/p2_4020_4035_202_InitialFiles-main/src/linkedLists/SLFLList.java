@@ -9,11 +9,9 @@ package linkedLists;
  */
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import interfaces.LinkedList;
 import interfaces.Node;
-import linkedLists.SLList.SNode;
 
 /* 
  * Jose Carlos Ventosa Rodriguez
@@ -21,6 +19,7 @@ import linkedLists.SLList.SNode;
  * jose.ventosa1@upr.edu
  */
 
+@SuppressWarnings("unused")
 public class SLFLList<E> implements LinkedList<E> {
 	private SNode<E> first, last; // reference to the first node and to the last node
 	int length;
@@ -98,8 +97,8 @@ public class SLFLList<E> implements LinkedList<E> {
 	}
 
 	/*
-	 * Creates a new node is the next of the target, if next is nothing, then return null,
-	 * otherwise, returns the new node that is the next one
+	 * Creates a new node is the next of the target, if next is nothing, then return
+	 * null, otherwise, returns the new node that is the next one
 	 */
 	public Node<E> getNodeAfter(Node<E> target) {
 		SNode<E> nextNode = ((SNode<E>) target).getNext();
@@ -108,11 +107,12 @@ public class SLFLList<E> implements LinkedList<E> {
 		else
 			return nextNode;
 	}
-/*
- * Checks if the target is the first one, if so, return null (first doesn't have a preceding node)
- * Otherwise, runs through every single Node in the list until it finds the target, 
- * return target
- */
+
+	/*
+	 * Checks if the target is the first one, if so, return null (first doesn't have
+	 * a preceding node) Otherwise, runs through every single Node in the list until
+	 * it finds the target, return target
+	 */
 	public Node<E> getNodeBefore(Node<E> target) {
 		if (target == first)
 			return null;
@@ -128,11 +128,12 @@ public class SLFLList<E> implements LinkedList<E> {
 	public int length() {
 		return this.length;
 	}
+
 	/*
-	 * Checks if first Node is the target, if so, puts both next and element to null (.clean())
-	 * else if last, then gets the node previous to last and .clean() last
-	 * else, makes a new node and checks the node before the target,
-	 *  sets the next as the target and .clean() it
+	 * Checks if first Node is the target, if so, puts both next and element to null
+	 * (.clean()) else if last, then gets the node previous to last and .clean()
+	 * last else, makes a new node and checks the node before the target, sets the
+	 * next as the target and .clean() it
 	 */
 	public void removeNode(Node<E> target) {
 		if (target == first)
@@ -151,15 +152,17 @@ public class SLFLList<E> implements LinkedList<E> {
 	public Node<E> createNewNode() {
 		return new SNode<E>();
 	}
-
+	/*
+	 * NOT DONE, SEND HELP
+	 */
 	@Override
 	public Iterator<E> iterator() {
 		return this.iterator();
 	}
+
 	/*
-	 * Goes to last node and sets a new Node after it
-	 * last becomes new Node
-	 * length increases by 1
+	 * Goes to last node and sets a new Node after it last becomes new Node length
+	 * increases by 1
 	 */
 	@Override
 	public void addLastNode(Node<E> newNode) {
@@ -167,6 +170,7 @@ public class SLFLList<E> implements LinkedList<E> {
 		last = (SNode<E>) newNode;
 		length++;
 	}
+
 	/*
 	 * I have 0 clue what to do here, thank you for coming to my Ted-Talk
 	 */
