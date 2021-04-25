@@ -1,4 +1,4 @@
-package testers;
+package tester;
 
 import linkedLists.SLFLList;
 import linkedLists.SLList;
@@ -11,8 +11,8 @@ public class IndexListTester {
 	 * @param args
 	 */
 	public static void main(String[] args) {	
-		listTester("Testing the singly linked list (SLList): ",
-				new LLIndexList<Integer>(new SLList<Integer>()));	
+		listTester("Testing the singly linked list (SLFLList): ",
+				new LLIndexList<Integer>(new SLFLList<Integer>()));	
 	}
 		
 	private static void listTester(String msg, IndexList<Integer>  list) { 
