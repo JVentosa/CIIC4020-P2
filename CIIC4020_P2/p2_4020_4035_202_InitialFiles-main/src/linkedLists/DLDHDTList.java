@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import interfaces.LinkedList;
 import interfaces.Node;
+import linkedLists.SLFLList.SNode;
 
 /* 
  * Jose Carlos Ventosa Rodriguez
@@ -180,7 +181,8 @@ public class DLDHDTList<E> implements LinkedList<E> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public DLDHDTList<E> clone() throws CloneNotSupportedException {
-		return (DLDHDTList<E>) super.clone(); // Uses the built-in .clone() method with super, making a deep clone of the DLDHDTList
+		return (DLDHDTList<E>) super.clone(); // Uses the built-in .clone() method with super, making a deep clone of
+												// the DLDHDTList
 	}
 
 	/*
@@ -263,24 +265,29 @@ public class DLDHDTList<E> implements LinkedList<E> {
 
 	}
 
+	/*
+	 * IDENTICAL ITERATOR ELEMENTS/NODES TO SLList.java Both work with each other as
+	 * they are both Linked Lists SNodes changed into DNode, straight forward
+	 * changes. All works the same
+	 */
 	private class ElementsIterator implements Iterator<E> {
 
 		@SuppressWarnings("rawtypes")
-		DLDHDTList.NodesIterator nodeIterator = new DLDHDTList.NodesIterator();
+		DLDHDTList.NodesIterator iterable = new DLDHDTList.NodesIterator();
 
 		@Override
 		public boolean hasNext() {
-			return nodeIterator.hasNext();
+			return iterable.hasNext(); // Verify if iterable nodes has a next node
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
 		public E next() {
-			return (E) nodeIterator.next().getElement();
+			return (E) iterable.next().getElement(); // Gets the next element
 		}
 
 		public void remove() {
-			nodeIterator.remove();
+			iterable.remove(); // Removes the iterable node
 		}
 	}
 
@@ -295,34 +302,45 @@ public class DLDHDTList<E> implements LinkedList<E> {
 
 	private class NodesIterator implements Iterator<Node<E>> {
 
-		private DNode<E> curr = header.getNext();
-		private DNode<E> ptntr = null;
-		private boolean canRemove = false;
+		/*
+		 * current node contains element, returns on next .next(); can the preceding
+		 * node be removed? removable means .remove() can be used removable means
+		 * .remove() can be used
+		 */
+		private DNode<E> current = header; // First in position
+		private DNode<E> preced = null;
+		private boolean removable = false;
 
 		public boolean hasNext() {
-			return curr != null;
+			return current != null;
 		}
 
 		public DLDHDTList.DNode<E> next() {
 			if (!hasNext())
 				throw new NoSuchElementException("Iterator is completed.");
-			if (canRemove)
-				ptntr = (ptntr == null ? curr : ptntr.getNext());
-			canRemove = true;
-			DLDHDTList.DNode<E> ntr = curr;
-			curr = curr.getNext();
+
+			if (removable)
+				preced = (preced == null ? header : preced.getNext());
+
+			removable = true;
+			DNode<E> ntr = current;
+			current = current.getNext();
 			return ntr;
 		}
 
+		/*
+		 * 2nd if - removes the first node if possible else - removes the node after
+		 * preceding
+		 */
 		public void remove() {
-			if (!canRemove)
+			if (!removable)
 				throw new IllegalStateException("Can't remove this.");
-			if (ptntr == null)
-				curr = curr.getNext();
+			if (preced == null)
+				header = header.getNext();
 			else
-				ptntr.setNext(ptntr.getNext().getNext());
+				preced.setNext(preced.getNext().getNext());
 			length--;
-			canRemove = false;
+			removable = false;
 		}
 
 	}

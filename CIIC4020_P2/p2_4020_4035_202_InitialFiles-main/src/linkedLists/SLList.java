@@ -8,11 +8,13 @@ import java.util.NoSuchElementException;
 
 import interfaces.LinkedList;
 import interfaces.Node;
+import linkedLists.SLFLList.SNode;
 
 /**
  * @author pirvos
  *
  */
+@SuppressWarnings("unused")
 public class SLList<E> implements LinkedList<E> {
 	private SNode<E> first;
 	private int length;
@@ -85,13 +87,13 @@ public class SLList<E> implements LinkedList<E> {
 			return curr;
 		}
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public SLList<E> clone() throws CloneNotSupportedException {
-		return (SLList<E>) super.clone(); // Uses the built-in .clone() method with super, making a deep clone of the SLList
-		
+		return (SLList<E>) super.clone(); // Uses the built-in .clone() method with super, making a deep clone of the
+											// SLList
+
 	}
 
 	public Node<E> getNodeAfter(Node<E> target) {
@@ -227,6 +229,25 @@ public class SLList<E> implements LinkedList<E> {
 		}
 	}
 
+	private class ElementsIterator implements Iterator<E> {
+
+		NodesIterator iterable = new NodesIterator();
+
+		@Override
+		public boolean hasNext() {
+			return iterable.hasNext(); // Verify if iterable nodes has a next node
+		}
+
+		@Override
+		public E next() {
+			return iterable.next().getElement(); // Gets the next element
+		}
+
+		public void remove() {
+			iterable.remove(); // Removes the iterable node
+		}
+	}
+
 	private class NodesIterable implements Iterable<Node<E>> {
 
 		@Override
@@ -236,55 +257,47 @@ public class SLList<E> implements LinkedList<E> {
 
 	}
 
-	private class ElementsIterator implements Iterator<E> {
-
-		NodesIterator nodesIter = new NodesIterator();
-
-		@Override
-		public boolean hasNext() {
-			return nodesIter.hasNext();
-		}
-
-		@Override
-		public E next() {
-			return nodesIter.next().getElement();
-		}
-
-		public void remove() {
-			nodesIter.remove();
-		}
-	}
-
 	private class NodesIterator implements Iterator<Node<E>> {
 
-		private SNode<E> curr = first; // node containing element to return on next next()
-		private SNode<E> ptntr = null; // node preceding node valid to be removed
-		private boolean canRemove = false; // to control when remove() is valid to execute
+		/*
+		 * current node contains element, returns on next .next(); can the preceding
+		 * node be removed? removable means .remove() can be used removable means
+		 * .remove() can be used
+		 */
+		private SNode<E> current = first; // First in position
+		private SNode<E> preced = null;
+		private boolean removable = false;
 
 		public boolean hasNext() {
-			return curr != null;
+			return current != null;
 		}
 
 		public SNode<E> next() {
 			if (!hasNext())
 				throw new NoSuchElementException("Iterator is completed.");
-			if (canRemove)
-				ptntr = (ptntr == null ? first : ptntr.getNext()); // Why this? Think...
-			canRemove = true;
-			SNode<E> ntr = curr;
-			curr = curr.getNext(); // get element and prepare for future
+
+			if (removable)
+				preced = (preced == null ? first : preced.getNext());
+
+			removable = true;
+			SNode<E> ntr = current;
+			current = current.getNext();
 			return ntr;
 		}
 
+		/*
+		 * 2nd if - removes the first node if possible else - removes the node after
+		 * preceding
+		 */
 		public void remove() {
-			if (!canRemove)
-				throw new IllegalStateException("Not valid to remove.");
-			if (ptntr == null)
-				first = first.getNext(); // removes the first node
+			if (!removable)
+				throw new IllegalStateException("Can't remove this.");
+			if (preced == null)
+				first = first.getNext();
 			else
-				ptntr.setNext(ptntr.getNext().getNext()); // removes node after ptntr
+				preced.setNext(preced.getNext().getNext());
 			length--;
-			canRemove = false;
+			removable = false;
 		}
 
 	}

@@ -19,11 +19,6 @@ public abstract class AbstractDLList<E> implements LinkedList<E> {
 		public DNode() {
 			this(null, null, null);
 		}
-		
-		@Override
-		public AbstractDLList clone() {
-			return null;
-		}
 
 		public DNode(T e) {
 			this(e, null, null);

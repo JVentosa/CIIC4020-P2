@@ -6,7 +6,6 @@ import linkedLists.SLList;
 import indexList.LLIndexList;
 import interfaces.IndexList;
 
-
 /*
  * Tester made to verify if .clone works
  * To use, run debugger and verify the breakpoint on system.out.println().
@@ -17,20 +16,18 @@ import interfaces.IndexList;
  */
 public class Clonetester {
 	@SuppressWarnings("unused")
-	public static void main(String[] args) throws CloneNotSupportedException{
+	public static void main(String[] args) throws CloneNotSupportedException {
 		SLList<Integer> SLList = new SLList<>();
 		SLList<Integer> cloneSLList = SLList.clone();
-		
-		
+
 		SLFLList<Integer> SLFLList = new SLFLList<>();
 		SLFLList<Integer> cloneSLFLlist = SLFLList.clone();
-				
+
 		DLDHDTList<Integer> DLDHDTList = new DLDHDTList<>();
 		DLDHDTList<Integer> cloneDLDHDTList = DLDHDTList.clone();
-		
+
 		System.out.println();
 
-		
 	}
 
 }

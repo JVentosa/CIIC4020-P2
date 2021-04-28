@@ -15,7 +15,7 @@ public class IndexListTester {
 		listTester("Testing the singly linked list (SLList): ", new LLIndexList<Integer>(new SLList<Integer>()));
 		listTester("Testing the singly linked list (SLFLList): ", new LLIndexList<Integer>(new SLFLList<Integer>()));
 		listTester("Testing the singly linked list (DLDHDTList): ", new LLIndexList<Integer>(new DLDHDTList<Integer>()));
-		
+
 	}
 
 	private static void listTester(String msg, IndexList<Integer> list) {
@@ -78,6 +78,7 @@ public class IndexListTester {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static void showSize(IndexList<Integer> list) {
 		System.out.println("\nSize of the list is: " + list.size());
 	}

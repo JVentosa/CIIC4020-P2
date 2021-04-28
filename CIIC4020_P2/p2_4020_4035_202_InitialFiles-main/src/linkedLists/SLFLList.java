@@ -20,7 +20,6 @@ import interfaces.Node;
  * jose.ventosa1@upr.edu
  */
 
-@SuppressWarnings("unused")
 public class SLFLList<E> implements LinkedList<E> {
 	private SNode<E> first, last; // reference to the first node and to the last node
 	int length;
@@ -68,7 +67,6 @@ public class SLFLList<E> implements LinkedList<E> {
 
 	@Override
 	public void addNodeAfter(Node<E> target, Node<E> nuevo) {
-		// TODO Auto-generated method stub
 		((SNode<E>) nuevo).setNext(((SNode<E>) target).getNext());
 		((SNode<E>) target).setNext((SNode<E>) nuevo);
 		length++;
@@ -77,7 +75,6 @@ public class SLFLList<E> implements LinkedList<E> {
 
 	@Override
 	public void addNodeBefore(Node<E> target, Node<E> nuevo) {
-		// TODO Auto-generated method stub
 		if (target == first)
 			this.addFirstNode(nuevo);
 		else {
@@ -181,10 +178,11 @@ public class SLFLList<E> implements LinkedList<E> {
 		((SNode<E>) target).clean();
 		length--;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public SLFLList<E> clone() throws CloneNotSupportedException{
-		return (SLFLList<E>) super.clone();  // Uses the built-in .clone() method with super, making a deep clone of the SLFLList
+	public SLFLList<E> clone() throws CloneNotSupportedException {
+		return (SLFLList<E>) super.clone(); // Uses the built-in .clone() method with super, making a deep clone of the
+											// SLFLList
 	}
 
 	public Node<E> createNewNode() {
@@ -201,9 +199,9 @@ public class SLFLList<E> implements LinkedList<E> {
 		last = (SNode<E>) newNode;
 		length++;
 	}
-	
+
 	/*
-	 * 
+	 * Returns the elements of the iterating node
 	 */
 	@Override
 	public Iterator<E> iterator() {
@@ -211,7 +209,7 @@ public class SLFLList<E> implements LinkedList<E> {
 	}
 
 	/*
-	 *
+	 * Returns the node of the iterable nodes
 	 */
 	@Override
 	public Iterable<Node<E>> nodes() {
@@ -266,21 +264,25 @@ public class SLFLList<E> implements LinkedList<E> {
 		}
 	}
 
+	/*
+	 * IDENTICAL ITERATOR ELEMENTS/NODES TO SLList.java Both work with each other as
+	 * they are both Simply Linked Lists
+	 */
 	private class ElementsIterator implements Iterator<E> {
-		NodesIterator nodesIter = new NodesIterator();
+		NodesIterator iterable = new NodesIterator();
 
 		@Override
 		public boolean hasNext() {
-			return nodesIter.hasNext();
+			return iterable.hasNext(); // Verify if iterable nodes has a next node
 		}
 
 		@Override
 		public E next() {
-			return nodesIter.next().getElement();
+			return iterable.next().getElement(); // Gets the next element
 		}
 
 		public void remove() {
-			nodesIter.remove();
+			iterable.remove(); // Removes the iterable node
 		}
 	}
 
@@ -299,7 +301,7 @@ public class SLFLList<E> implements LinkedList<E> {
 		 * node be removed? removable means .remove() can be used removable means
 		 * .remove() can be used
 		 */
-		private SNode<E> current = first;
+		private SNode<E> current = first; // First in position
 		private SNode<E> preced = null;
 		private boolean removable = false;
 
@@ -326,7 +328,7 @@ public class SLFLList<E> implements LinkedList<E> {
 		 */
 		public void remove() {
 			if (!removable)
-				throw new IllegalStateException("Not valid to remove.");
+				throw new IllegalStateException("Can't remove this.");
 			if (preced == null)
 				first = first.getNext();
 			else

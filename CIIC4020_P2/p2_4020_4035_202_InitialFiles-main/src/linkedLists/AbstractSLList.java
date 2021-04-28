@@ -19,11 +19,6 @@ public abstract class AbstractSLList<E> implements LinkedList<E> {
 			element = null;
 			next = null;
 		}
-		
-		@Override
-		public AbstractSLList clone() {
-			return null;
-		}
 
 		public SNode(T data, SNode<T> next) {
 			this.element = data;
