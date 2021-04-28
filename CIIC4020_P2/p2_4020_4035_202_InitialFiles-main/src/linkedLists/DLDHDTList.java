@@ -29,11 +29,6 @@ public class DLDHDTList<E> implements LinkedList<E> {
 		length = 0;
 	}
 
-	@Override
-	public DLDHDTList<E> clone() {
-		return null;
-	}
-
 	public void addFirstNode(Node<E> nuevo) {
 		addNodeAfter(header, nuevo);
 	}
@@ -182,8 +177,14 @@ public class DLDHDTList<E> implements LinkedList<E> {
 		destroy();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public DLDHDTList<E> clone() throws CloneNotSupportedException {
+		return (DLDHDTList<E>) super.clone(); // Uses the built-in .clone() method with super, making a deep clone of the DLDHDTList
+	}
+
 	/*
-	 * =
+	 * 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -291,7 +292,7 @@ public class DLDHDTList<E> implements LinkedList<E> {
 			return new DLDHDTList.NodesIterator();
 		}
 	}
-	
+
 	private class NodesIterator implements Iterator<Node<E>> {
 
 		private DNode<E> curr = header.getNext();

@@ -30,11 +30,6 @@ public class SLFLList<E> implements LinkedList<E> {
 		length = 0;
 	}
 
-	@Override
-	public SLFLList<E> clone() {
-		return null;
-	}
-
 	/*
 	 * First sets the new node into the Linked List, then sets the first = to the
 	 * new node length increases by 1
@@ -186,17 +181,14 @@ public class SLFLList<E> implements LinkedList<E> {
 		((SNode<E>) target).clean();
 		length--;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public SLFLList<E> clone() throws CloneNotSupportedException{
+		return (SLFLList<E>) super.clone();  // Uses the built-in .clone() method with super, making a deep clone of the SLFLList
+	}
 
 	public Node<E> createNewNode() {
 		return new SNode<E>();
-	}
-
-	/*
-	 *
-	 */
-	@Override
-	public Iterator<E> iterator() {
-		return new ElementsIterator();
 	}
 
 	/*
@@ -208,6 +200,14 @@ public class SLFLList<E> implements LinkedList<E> {
 		((SNode<E>) newNode).setNext(last);
 		last = (SNode<E>) newNode;
 		length++;
+	}
+	
+	/*
+	 * 
+	 */
+	@Override
+	public Iterator<E> iterator() {
+		return new ElementsIterator();
 	}
 
 	/*
@@ -285,7 +285,7 @@ public class SLFLList<E> implements LinkedList<E> {
 	}
 
 	private class NodesIterable implements Iterable<Node<E>> {
-		
+
 		@Override
 		public Iterator<Node<E>> iterator() {
 			return new NodesIterator();

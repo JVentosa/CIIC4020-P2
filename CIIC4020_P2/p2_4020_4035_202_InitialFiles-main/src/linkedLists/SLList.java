@@ -22,12 +22,6 @@ public class SLList<E> implements LinkedList<E> {
 		length = 0;
 	}
 
-	@Override
-	public SLList<E> clone() {
-		return null;
-
-	}
-	
 	public void addFirstNode(Node<E> nuevo) {
 		// Pre: nuevo is not a node in the list
 		((SNode<E>) nuevo).setNext(first);
@@ -90,6 +84,14 @@ public class SLList<E> implements LinkedList<E> {
 				curr = curr.getNext();
 			return curr;
 		}
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public SLList<E> clone() throws CloneNotSupportedException {
+		return (SLList<E>) super.clone(); // Uses the built-in .clone() method with super, making a deep clone of the SLList
+		
 	}
 
 	public Node<E> getNodeAfter(Node<E> target) {
