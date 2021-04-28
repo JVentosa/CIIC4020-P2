@@ -21,7 +21,7 @@ import interfaces.Node;
  */
 
 @SuppressWarnings("unused")
-public abstract class SLFLList<E> implements LinkedList<E> {
+public class SLFLList<E> implements LinkedList<E> {
 	private SNode<E> first, last; // reference to the first node and to the last node
 	int length;
 
@@ -69,6 +69,28 @@ public abstract class SLFLList<E> implements LinkedList<E> {
 			Node<E> prev = getNodeBefore(target);
 			this.adSNodeAfter(prev, nuevo);
 		}
+	}
+	
+	
+	@Override
+	public void addNodeAfter(Node<E> target, Node<E> nuevo) {
+		// TODO Auto-generated method stub
+		((SNode<E>)nuevo).setNext(((SNode<E>)target).getNext());
+		((SNode<E>)target).setNext((SNode<E>)nuevo);
+		length++;
+		
+	}
+
+	@Override
+	public void addNodeBefore(Node<E> target, Node<E> nuevo) {
+		// TODO Auto-generated method stub
+		if(target == first) 
+			this.addFirstNode(nuevo);
+		else {
+			Node<E> prev = findNodePrevTo(target);
+			this.addNodeAfter(prev, nuevo);
+		}
+		
 	}
 
 	/*
@@ -130,6 +152,17 @@ public abstract class SLFLList<E> implements LinkedList<E> {
 		}
 
 	}
+	
+	private Node<E> findNodePrevTo(Node<E> target) {
+		if (target == first)
+			return null;
+		else {
+			SNode<E> prev = first;
+			while (prev != null && prev.getNext() != target)
+				prev = prev.getNext();
+			return prev;
+		}
+	}
 
 	public int length() {
 		return this.length;
@@ -160,7 +193,7 @@ public abstract class SLFLList<E> implements LinkedList<E> {
 	}
 
 	/*
-	 * NOT DONE, SEND HELP
+	 *
 	 */
 	@Override
 	public Iterator<E> iterator() {
@@ -179,11 +212,10 @@ public abstract class SLFLList<E> implements LinkedList<E> {
 	}
 
 	/*
-	 * I have 0 clue what to do here, thank you for coming to my Ted-Talk
+	 *
 	 */
 	@Override
 	public Iterable<Node<E>> nodes() {
-		// TODO Auto-generated method stub
 		return new NodesIterable();
 	}
 
@@ -296,4 +328,6 @@ public abstract class SLFLList<E> implements LinkedList<E> {
 		}
 
 	}
+
+	
 }

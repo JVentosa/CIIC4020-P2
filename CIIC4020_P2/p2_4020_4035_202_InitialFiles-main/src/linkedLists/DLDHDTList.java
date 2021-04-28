@@ -183,7 +183,7 @@ public class DLDHDTList<E> implements LinkedList<E> {
 	}
 
 	/*
-	 * HELP ME IDK WHAT TO DO HERE
+	 * =
 	 */
 	@Override
 	public Iterable<Node<E>> nodes() {
@@ -191,7 +191,7 @@ public class DLDHDTList<E> implements LinkedList<E> {
 	}
 
 	/*
-	 * TODAVIA ME FALTA ESTO TAMBIEN :^)
+	 * 
 	 */
 	@Override
 	public Iterator<E> iterator() {
