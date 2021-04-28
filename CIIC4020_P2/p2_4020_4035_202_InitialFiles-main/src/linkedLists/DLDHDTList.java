@@ -185,6 +185,7 @@ public class DLDHDTList<E> implements LinkedList<E> {
 	/*
 	 * =
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Iterable<Node<E>> nodes() {
 		return new DLDHDTList.NodesIterable();
@@ -193,6 +194,7 @@ public class DLDHDTList<E> implements LinkedList<E> {
 	/*
 	 * 
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Iterator<E> iterator() {
 		return new DLDHDTList.ElementsIterator();
@@ -262,6 +264,7 @@ public class DLDHDTList<E> implements LinkedList<E> {
 
 	private class ElementsIterator implements Iterator<E> {
 
+		@SuppressWarnings("rawtypes")
 		DLDHDTList.NodesIterator nodeIterator = new DLDHDTList.NodesIterator();
 
 		@Override
@@ -269,6 +272,7 @@ public class DLDHDTList<E> implements LinkedList<E> {
 			return nodeIterator.hasNext();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public E next() {
 			return (E) nodeIterator.next().getElement();
@@ -281,6 +285,7 @@ public class DLDHDTList<E> implements LinkedList<E> {
 
 	private class NodesIterable implements Iterable<Node<E>> {
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
 		public Iterator<Node<E>> iterator() {
 			return new DLDHDTList.NodesIterator();
