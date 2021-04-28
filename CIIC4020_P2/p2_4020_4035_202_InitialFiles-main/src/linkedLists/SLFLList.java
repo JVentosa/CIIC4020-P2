@@ -9,6 +9,7 @@ package linkedLists;
  */
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import interfaces.LinkedList;
 import interfaces.Node;
@@ -20,13 +21,18 @@ import interfaces.Node;
  */
 
 @SuppressWarnings("unused")
-public class SLFLList<E> implements LinkedList<E> {
+public abstract class SLFLList<E> implements LinkedList<E> {
 	private SNode<E> first, last; // reference to the first node and to the last node
 	int length;
 
 	public SLFLList() { // to create an empty list instance
 		first = last = null;
 		length = 0;
+	}
+
+	@Override
+	public SLFLList<E> clone() {
+		return null;
 	}
 
 	/*
@@ -44,7 +50,7 @@ public class SLFLList<E> implements LinkedList<E> {
 	 * Works by finding new, getting target's next node as the new one Then actually
 	 * setting target's next node as the new one length increases by 1
 	 */
-	public void addNodeAfter(Node<E> target, Node<E> nuevo) {
+	public void adSNodeAfter(Node<E> target, Node<E> nuevo) {
 		((SNode<E>) nuevo).setNext(((SNode<E>) target).getNext());
 		((SNode<E>) target).setNext((SNode<E>) nuevo);
 		length++;
@@ -55,13 +61,13 @@ public class SLFLList<E> implements LinkedList<E> {
 	 * list Makes the first = to the new node Otherwise, get the previous node to
 	 * the target, and set the node as the next one from the previous
 	 */
-	public void addNodeBefore(Node<E> target, Node<E> nuevo) {
+	public void adSNodeBefore(Node<E> target, Node<E> nuevo) {
 		if (target == first) {
 			this.addFirstNode(nuevo);
 			first = ((SNode<E>) nuevo);
 		} else {
 			Node<E> prev = getNodeBefore(target);
-			this.addNodeAfter(prev, nuevo);
+			this.adSNodeAfter(prev, nuevo);
 		}
 	}
 
@@ -152,12 +158,13 @@ public class SLFLList<E> implements LinkedList<E> {
 	public Node<E> createNewNode() {
 		return new SNode<E>();
 	}
+
 	/*
 	 * NOT DONE, SEND HELP
 	 */
 	@Override
 	public Iterator<E> iterator() {
-		return this.iterator();
+		return new ElementsIterator();
 	}
 
 	/*
@@ -177,7 +184,7 @@ public class SLFLList<E> implements LinkedList<E> {
 	@Override
 	public Iterable<Node<E>> nodes() {
 		// TODO Auto-generated method stub
-		return null;
+		return new NodesIterable();
 	}
 
 	/**
@@ -228,4 +235,65 @@ public class SLFLList<E> implements LinkedList<E> {
 		}
 	}
 
+	private class ElementsIterator implements Iterator<E> {
+
+		NodesIterator nodesIter = new NodesIterator();
+
+		@Override
+		public boolean hasNext() {
+			return nodesIter.hasNext();
+		}
+
+		@Override
+		public E next() {
+			return nodesIter.next().getElement();
+		}
+
+		public void remove() {
+			nodesIter.remove();
+		}
+	}
+
+	private class NodesIterable implements Iterable<Node<E>> {
+
+		@Override
+		public Iterator<Node<E>> iterator() {
+			return new NodesIterator();
+		}
+
+	}
+
+	private class NodesIterator implements Iterator<Node<E>> {
+
+		private SNode<E> curr = first; // node containing element to return on next next()
+		private SNode<E> ptntr = null; // node preceding node valid to be removed
+		private boolean canRemove = false; // to control when remove() is valid to execute
+
+		public boolean hasNext() {
+			return curr != null;
+		}
+
+		public SNode<E> next() {
+			if (!hasNext())
+				throw new NoSuchElementException("Iterator is completed.");
+			if (canRemove)
+				ptntr = (ptntr == null ? first : ptntr.getNext()); // Why this? Think...
+			canRemove = true;
+			SNode<E> ntr = curr;
+			curr = curr.getNext(); // get element and prepare for future
+			return ntr;
+		}
+
+		public void remove() {
+			if (!canRemove)
+				throw new IllegalStateException("Not valid to remove.");
+			if (ptntr == null)
+				first = first.getNext(); // removes the first node
+			else
+				ptntr.setNext(ptntr.getNext().getNext()); // removes node after ptntr
+			length--;
+			canRemove = false;
+		}
+
+	}
 }

@@ -22,6 +22,12 @@ public class SLList<E> implements LinkedList<E> {
 		length = 0;
 	}
 
+	@Override
+	public SLList<E> clone() {
+		return null;
+
+	}
+	
 	public void addFirstNode(Node<E> nuevo) {
 		// Pre: nuevo is not a node in the list
 		((SNode<E>) nuevo).setNext(first);

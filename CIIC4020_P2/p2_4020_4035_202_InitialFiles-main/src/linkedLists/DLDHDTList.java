@@ -6,6 +6,12 @@ import java.util.NoSuchElementException;
 import interfaces.LinkedList;
 import interfaces.Node;
 
+/* 
+ * Jose Carlos Ventosa Rodriguez
+ * 802-19-8619, CIIC4020 - 086/050L
+ * jose.ventosa1@upr.edu
+ */
+
 public class DLDHDTList<E> implements LinkedList<E> {
 	private DNode<E> header, trailer;
 	private int length;
@@ -21,6 +27,11 @@ public class DLDHDTList<E> implements LinkedList<E> {
 		header.setNext(trailer);
 		trailer.setPrev(header);
 		length = 0;
+	}
+
+	@Override
+	public DLDHDTList<E> clone() {
+		return null;
 	}
 
 	public void addFirstNode(Node<E> nuevo) {
@@ -75,13 +86,13 @@ public class DLDHDTList<E> implements LinkedList<E> {
 
 	public Node<E> getFirstNode() throws NoSuchElementException {
 		if (length == 0)
-			return null;
+			throw new NoSuchElementException("getFirstNode: The list is empty");
 		return header.getNext();
 	}
 
 	public Node<E> getLastNode() throws NoSuchElementException {
 		if (length == 0)
-			return null;
+			throw new NoSuchElementException("getLastNode: The list is empty");
 		return trailer.getPrev();
 	}
 
@@ -92,8 +103,8 @@ public class DLDHDTList<E> implements LinkedList<E> {
 	public Node<E> getNodeAfter(Node<E> target) {
 		// ADD CODE HERE AND MODIFY RETURN ACCORDINGLY
 		DNode<E> nextNode = ((DNode<E>) target).getNext();
-		if (nextNode == null)
-			return null;
+		if (length == 0)
+			throw new NoSuchElementException("getNodeAfter: The list is empty");
 		else
 			return nextNode;
 	}
@@ -105,8 +116,8 @@ public class DLDHDTList<E> implements LinkedList<E> {
 	public Node<E> getNodeBefore(Node<E> target) {
 		// ADD CODE HERE AND MODIFY RETURN ACCORDINGLY
 		DNode<E> prevNode = ((DNode<E>) target).getPrev();
-		if (prevNode == null)
-			return null;
+		if (length == 0)
+			throw new NoSuchElementException("getNodeBefore: The list is empty");
 		else {
 			return prevNode;
 		}
@@ -124,9 +135,9 @@ public class DLDHDTList<E> implements LinkedList<E> {
 		 * Target can't be a dummy, it's always a data note, therefore, no if/else is
 		 * required to differentiate if dummy or not
 		 * 
-		 * Make new DNode nodes, set as target doubly node, target's previous node and target's next node
-		 * Afterwards, set target's previous node as next node's previous, and vice versa
-		 * clean target to make it's reference and data to null
+		 * Make new DNode nodes, set as target doubly node, target's previous node and
+		 * target's next node Afterwards, set target's previous node as next node's
+		 * previous, and vice versa clean target to make it's reference and data to null
 		 * reduce LList length by 1
 		 */
 		DNode<E> dTarget = (DNode<E>) target; // Create a casted (Doubly Node) version of the target
@@ -160,8 +171,9 @@ public class DLDHDTList<E> implements LinkedList<E> {
 	 * dummy header and dummy trailer nodes.
 	 * 
 	 * 
-	 * If statement to get make sure list isn't empty, if not empty, remove the next node after header
-	 * Run destroy() method to prepare every single note that also isn't a header/trailer
+	 * If statement to get make sure list isn't empty, if not empty, remove the next
+	 * node after header Run destroy() method to prepare every single note that also
+	 * isn't a header/trailer
 	 */
 	public void makeEmpty() {
 		if (header.getNext() != trailer) {
@@ -169,21 +181,21 @@ public class DLDHDTList<E> implements LinkedList<E> {
 		}
 		destroy();
 	}
-/*
- * HELP ME IDK WHAT TO DO HERE
- */
+
+	/*
+	 * HELP ME IDK WHAT TO DO HERE
+	 */
 	@Override
 	public Iterable<Node<E>> nodes() {
-		// TODO Auto-generated method stub
-		return null;
+		return new DLDHDTList.NodesIterable();
 	}
-/*
- * TODAVIA ME FALTA ESTO TAMBIEN :^)
- */
+
+	/*
+	 * TODAVIA ME FALTA ESTO TAMBIEN :^)
+	 */
 	@Override
 	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new DLDHDTList.ElementsIterator();
 	}
 
 	/**
@@ -198,6 +210,7 @@ public class DLDHDTList<E> implements LinkedList<E> {
 		private DNode<T> prev, next;
 
 		// Constructors
+
 		public DNode() {
 			this(null, null, null);
 		}
@@ -243,6 +256,67 @@ public class DLDHDTList<E> implements LinkedList<E> {
 		public void clean() {
 			element = null;
 			prev = next = null;
+		}
+
+	}
+
+	private class ElementsIterator implements Iterator<E> {
+
+		DLDHDTList.NodesIterator nodeIterator = new DLDHDTList.NodesIterator();
+
+		@Override
+		public boolean hasNext() {
+			return nodeIterator.hasNext();
+		}
+
+		@Override
+		public E next() {
+			return (E) nodeIterator.next().getElement();
+		}
+
+		public void remove() {
+			nodeIterator.remove();
+		}
+	}
+
+	private class NodesIterable implements Iterable<Node<E>> {
+
+		@Override
+		public Iterator<Node<E>> iterator() {
+			return new DLDHDTList.NodesIterator();
+		}
+	}
+	
+	private class NodesIterator implements Iterator<Node<E>> {
+
+		private DNode<E> curr = header.getNext();
+		private DNode<E> ptntr = null;
+		private boolean canRemove = false;
+
+		public boolean hasNext() {
+			return curr != null;
+		}
+
+		public DLDHDTList.DNode<E> next() {
+			if (!hasNext())
+				throw new NoSuchElementException("Iterator is completed.");
+			if (canRemove)
+				ptntr = (ptntr == null ? curr : ptntr.getNext());
+			canRemove = true;
+			DLDHDTList.DNode<E> ntr = curr;
+			curr = curr.getNext();
+			return ntr;
+		}
+
+		public void remove() {
+			if (!canRemove)
+				throw new IllegalStateException("Can't remove this.");
+			if (ptntr == null)
+				curr = curr.getNext();
+			else
+				ptntr.setNext(ptntr.getNext().getNext());
+			length--;
+			canRemove = false;
 		}
 
 	}
