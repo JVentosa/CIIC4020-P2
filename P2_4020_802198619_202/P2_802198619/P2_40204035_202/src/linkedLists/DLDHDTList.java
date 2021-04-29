@@ -169,7 +169,7 @@ public class DLDHDTList<E> implements LinkedList<E> {
 	 * 
 	 * If statement to get make sure list isn't empty, if not empty, remove the next
 	 * node after header Run destroy() method to prepare every single note that also
-	 * isn't a header/trailer
+	 * isn't a header/traile
 	 */
 	public void makeEmpty() {
 		if (header.getNext() != trailer) {
